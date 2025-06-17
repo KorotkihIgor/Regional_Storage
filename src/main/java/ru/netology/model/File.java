@@ -19,8 +19,10 @@ public class File {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false)
     private String filename;
     private String type;
+
     @Lob
     private byte[] data;
 

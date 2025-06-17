@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.netology.exception.UserNotFoundException;
 import ru.netology.model.Person;
 import ru.netology.model.UserPrincipal;
 import ru.netology.repository.RegisterRepository;
@@ -17,13 +18,8 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        Person persons = registerRepository.findByUsername(username);
-
-        if (persons == null) {
-            System.out.println("Пользователь не найден.");
-            throw new UsernameNotFoundException("Пользователь не найден.");
-        }
+        Person persons = registerRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(String.format("Пользователь %s не найден!", username)));
         return new UserPrincipal(persons);
     }
 }

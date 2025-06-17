@@ -1,6 +1,8 @@
 package ru.netology.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +16,8 @@ public class RegisterController {
     private RegisterService registerService;
 
     @PostMapping("/register")
-    public Person register(@RequestBody Person person) {
-        return registerService.register(person);
+    public ResponseEntity<?> register(@RequestBody Person person) {
+        registerService.register(person);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }

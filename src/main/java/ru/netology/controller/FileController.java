@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.netology.dto.ResponseFile;
-import ru.netology.model.File;
 import ru.netology.service.FileService;
 
 import java.io.IOException;
@@ -21,11 +20,6 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello!";
-    }
-
     //    Обновление имени файла.
     @PutMapping("/file")
     public ResponseEntity<?> updateFile(@RequestParam("filename") String filename, @RequestBody String newFilename) {
@@ -35,9 +29,10 @@ public class FileController {
 
     //   Загрузка файлов в базу данных.
     @PostMapping("/file")
-    public File addFile(@RequestParam("filename") String filename,
+    public ResponseEntity<?> addFile(@RequestParam("filename") String filename,
                         @RequestParam("file") MultipartFile file) throws IOException {
-        return fileService.fileSave(filename, file);
+         fileService.fileSave(filename, file);
+         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     //    Просмотр файла.

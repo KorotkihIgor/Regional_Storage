@@ -22,15 +22,15 @@ public class FileService {
     @Transactional
     public File updateFile(String filename, String newFilename) {
         File file = fileRepository.findByFilename(filename)
-                .orElseThrow(() -> new FileNotFoundException(String.format("Файл  %s не найден!",filename)));
+                .orElseThrow(() -> new FileNotFoundException(String.format("Файл  %s не найден!", filename)));
         file.setFilename(newFilename);
         return fileRepository.save(file);
     }
 
     @Transactional
     public void deleteFile(String filename) {
-       File  file = fileRepository.findByFilename(filename)
-               .orElseThrow(() -> new FileNotFoundException(String.format("Файл  %s не найден!",filename)));
+        File file = fileRepository.findByFilename(filename)
+                .orElseThrow(() -> new FileNotFoundException(String.format("Файл  %s не найден!", filename)));
         fileRepository.deleteById(file.getId());
 
     }
@@ -38,7 +38,7 @@ public class FileService {
     @Transactional
     public ResponseFile downloadFile(String filename) {
         File file = fileRepository.findByFilename(filename)
-                .orElseThrow(() -> new FileNotFoundException(String.format("Файл  %s не найден!",filename)));
+                .orElseThrow(() -> new FileNotFoundException(String.format("Файл  %s не найден!", filename)));
 
         return ResponseFile.builder()
                 .filename(file.getFilename())
@@ -48,6 +48,9 @@ public class FileService {
     }
 
     public File fileSave(String filename, MultipartFile file) throws IOException {
+        if (file.isEmpty()){
+            throw new FileNotFoundException("Файл не загружен!");
+        }
         return fileRepository.save(new File(filename, file.getContentType(), file.getBytes()));
     }
 
