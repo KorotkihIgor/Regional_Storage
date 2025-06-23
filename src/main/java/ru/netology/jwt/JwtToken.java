@@ -1,11 +1,14 @@
 package ru.netology.jwt;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import ru.netology.model.Person;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
@@ -22,8 +25,8 @@ public class JwtToken {
     private long jwtTimeLive;
 
     //    generate JWT token.
-    public String generateToken(Authentication authentication) {
-        String username = authentication.getName();
+    public String generateToken(Person person) {
+        String username = person.getUsername();
         Date carrentDate = new Date();
         Date expirationDate = Date.from(LocalDateTime.now().plusMinutes(jwtTimeLive)
                 .atZone(ZoneId.systemDefault()).toInstant());
@@ -40,11 +43,23 @@ public class JwtToken {
 
     //    validate JWT token.
     public boolean validateToken(String token) {
-        Jwts.parser()
+      try {
+          Jwts.parser()
                 .verifyWith((SecretKey) key())
                 .build()
                 .parse(token);
         return true;
+      }catch (ExpiredJwtException e){
+          System.out.println("Срок действия JWT истёк!");
+          e.getMessage();
+      }catch (MalformedJwtException e){
+          System.out.println("Форма JWT некорректна!");
+          e.getMessage();
+      }catch (SignatureException e){
+          System.out.println("Недействительная подпись!");
+          e.getMessage();
+      }
+        return false;
     }
 
     //    get username from JWT token.

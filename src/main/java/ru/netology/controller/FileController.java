@@ -30,9 +30,9 @@ public class FileController {
     //   Загрузка файлов в базу данных.
     @PostMapping("/file")
     public ResponseEntity<?> addFile(@RequestParam("filename") String filename,
-                        @RequestParam("file") MultipartFile file) throws IOException {
-         fileService.fileSave(filename, file);
-         return ResponseEntity.ok(HttpStatus.OK);
+                                     @RequestParam("file") MultipartFile file) throws IOException {
+        fileService.fileSave(filename, file);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     //    Просмотр файла.
@@ -50,7 +50,8 @@ public class FileController {
 
     //    Удаление файла по имени файла.
     @DeleteMapping("/file")
-    public ResponseEntity<?> deleteFile(@RequestParam("filename") String filename) {
+    public ResponseEntity<?> deleteFile(
+                                        @RequestParam("filename") String filename) {
         fileService.deleteFile(filename);
         return ResponseEntity.ok(HttpStatus.OK);
     }

@@ -47,9 +47,12 @@ public class FileService {
                 .build();
     }
 
+     @Transactional
     public File fileSave(String filename, MultipartFile file) throws IOException {
-        if (file.isEmpty()){
+        if (file.isEmpty()) {
             throw new FileNotFoundException("Файл не загружен!");
+        }if(fileRepository.findByFilename(filename).isPresent()){
+            throw new FileNotFoundException(String.format("Файл с именем %s уже существует!",filename));
         }
         return fileRepository.save(new File(filename, file.getContentType(), file.getBytes()));
     }
