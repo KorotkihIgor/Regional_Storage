@@ -43,22 +43,22 @@ public class JwtToken {
 
     //    validate JWT token.
     public boolean validateToken(String token) {
-      try {
-          Jwts.parser()
-                .verifyWith((SecretKey) key())
-                .build()
-                .parse(token);
-        return true;
-      }catch (ExpiredJwtException e){
-          System.out.println("Срок действия JWT истёк!");
-          e.getMessage();
-      }catch (MalformedJwtException e){
-          System.out.println("Форма JWT некорректна!");
-          e.getMessage();
-      }catch (SignatureException e){
-          System.out.println("Недействительная подпись!");
-          e.getMessage();
-      }
+        try {
+            Jwts.parser()
+                    .verifyWith((SecretKey) key())
+                    .build()
+                    .parse(token);
+            return true;
+        } catch (ExpiredJwtException e) {
+            System.out.println("Срок действия JWT истёк!");
+            e.getMessage();
+        } catch (MalformedJwtException e) {
+            System.out.println("Форма JWT некорректна!");
+            e.getMessage();
+        } catch (SignatureException e) {
+            System.out.println("Недействительная подпись!");
+            e.getMessage();
+        }
         return false;
     }
 

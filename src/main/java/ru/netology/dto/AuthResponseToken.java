@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthResponseToken {
 
-//    @JsonProperty("auth-token")
-    @JsonProperty("Authorization")
+    @JsonProperty("auth-token")
+//    @JsonProperty("authorization")
     private String token;
 }

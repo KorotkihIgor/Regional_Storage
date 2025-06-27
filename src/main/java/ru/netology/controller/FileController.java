@@ -50,8 +50,7 @@ public class FileController {
 
     //    Удаление файла по имени файла.
     @DeleteMapping("/file")
-    public ResponseEntity<?> deleteFile(
-                                        @RequestParam("filename") String filename) {
+    public ResponseEntity<?> deleteFile(@RequestParam("filename") String filename) {
         fileService.deleteFile(filename);
         return ResponseEntity.ok(HttpStatus.OK);
     }
