@@ -26,7 +26,7 @@ public class AuthService {
     private Map<String, String> storageToken = new HashMap<>();
 
     public AuthResponseToken authLogin(AuthRequest authRequest) {
-        var authPerson = registerRepository.findByUsername(authRequest.getUsername()).orElseThrow();
+        var authPerson = registerRepository.findByUsername(authRequest.getLogin()).orElseThrow();
         if (passwordEncoder.matches(authRequest.getPassword(), authPerson.getPassword())) {
             String token = jwtToken.generateToken(authPerson);
 //           storageToken.put(authPerson.getUsername(),token);
