@@ -1,13 +1,11 @@
 package ru.netology.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthRequest {
-    private String login;
+    private String email;
     private String password;
 }

@@ -3,6 +3,7 @@ package ru.netology.service;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.netology.dto.AuthRequest;
 import ru.netology.exception.RegistrationException;
 import ru.netology.model.Person;
 import ru.netology.repository.RegisterRepository;
@@ -11,16 +12,16 @@ import ru.netology.repository.RegisterRepository;
 @AllArgsConstructor
 public class RegisterService {
 
-    private RegisterRepository userRepository;
+    private RegisterRepository registerRepository;
     private PasswordEncoder encoder;
 
     public Person register(Person person) {
-        userRepository.findByUsername(person.getUsername())
+       registerRepository.findByEmail(person.getEmail())
                 .ifPresent(s -> {
                     throw new RegistrationException(String
-                            .format("Пользователь с логином %s уже зарегистрирован!", person.getUsername()));
+                            .format("Пользователь с логином %s уже зарегистрирован!", person.getEmail()));
                 });
-        person.setPassword(encoder.encode(person.getPassword()));
-        return userRepository.save(person);
+       person.setPassword(encoder.encode(person.getPassword()));
+        return registerRepository.save(person);
     }
 }

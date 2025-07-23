@@ -15,8 +15,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseToken> login(@RequestBody AuthRequest authRequest) {
-        var token = authService.authLogin(authRequest);
+       AuthResponseToken token = authService.authLogin(authRequest);
         return ResponseEntity.ok(token);
+
     }
 
     @GetMapping("/login")

@@ -16,7 +16,7 @@ public class Person {
     private Integer Id;
 
     @Column(nullable = false)
-    private String username;
+    private String email;
 
     @Column(nullable = false)
     private String password;

@@ -7,8 +7,9 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import ru.netology.model.Person;
+import ru.netology.model.UserPrincipal;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
@@ -25,14 +26,15 @@ public class JwtToken {
     private long jwtTimeLive;
 
     //    generate JWT token.
-    public String generateToken(Person person) {
-        String username = person.getUsername();
+    public String generateToken(Authentication authentication) {
+//        String username = person.getEmail();
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         Date carrentDate = new Date();
         Date expirationDate = Date.from(LocalDateTime.now().plusMinutes(jwtTimeLive)
                 .atZone(ZoneId.systemDefault()).toInstant());
 
         String token = Jwts.builder()
-                .subject(username)
+                .subject(userPrincipal.getUsername())
                 .issuedAt(carrentDate)
                 .expiration(expirationDate)
                 .signWith(key())

@@ -29,8 +29,8 @@ public class FileController {
 
     //   Загрузка файлов в базу данных.
     @PostMapping("/file")
-    public ResponseEntity<?> addFile(@RequestParam("filename") String filename,
-                                     @RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<?> downloadFile(@RequestParam("filename") String filename,
+                                          @RequestParam("file") MultipartFile file) throws IOException {
         fileService.fileSave(filename, file);
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -57,7 +57,7 @@ public class FileController {
 
     //    Получение списка файлов.
     @GetMapping("/list")
-    public ResponseEntity<List<ResponseFile>> getAllFile(@RequestParam("limit") int limit) {
+    public ResponseEntity<List<ResponseFile>> getFiles(@RequestParam("limit") int limit) {
         return ResponseEntity.ok(fileService.getFile(limit));
     }
 
