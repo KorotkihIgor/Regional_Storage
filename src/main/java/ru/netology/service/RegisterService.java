@@ -1,11 +1,12 @@
 package ru.netology.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.netology.dto.AuthRequest;
 import ru.netology.exception.RegistrationException;
 import ru.netology.model.Person;
+import ru.netology.model.Role;
 import ru.netology.repository.RegisterRepository;
 
 @Service
@@ -15,13 +16,21 @@ public class RegisterService {
     private RegisterRepository registerRepository;
     private PasswordEncoder encoder;
 
+    private int count;
+
     public Person register(Person person) {
-       registerRepository.findByEmail(person.getEmail())
+        registerRepository.findByEmail(person.getEmail())
                 .ifPresent(s -> {
                     throw new RegistrationException(String
                             .format("Пользователь с логином %s уже зарегистрирован!", person.getEmail()));
                 });
-       person.setPassword(encoder.encode(person.getPassword()));
+        person.setPassword(encoder.encode(person.getPassword()));
+        if (count == 0) {
+            person.setRole(Role.ADMIN);
+            count++;
+            return registerRepository.save(person);
+        }
+        person.setRole(Role.USER);
         return registerRepository.save(person);
     }
 }
