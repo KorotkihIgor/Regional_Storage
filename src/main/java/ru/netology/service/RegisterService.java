@@ -1,6 +1,5 @@
 package ru.netology.service;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,10 +9,10 @@ import ru.netology.model.Role;
 import ru.netology.repository.RegisterRepository;
 
 @Service
-@AllArgsConstructor
 public class RegisterService {
-
+    @Autowired
     private RegisterRepository registerRepository;
+    @Autowired
     private PasswordEncoder encoder;
 
     private int count;
