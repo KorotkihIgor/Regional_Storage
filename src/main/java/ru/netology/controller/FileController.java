@@ -21,24 +21,25 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
-    //  Обновление имени файла.
+    //  Изменения файла.
     @PutMapping("/file")
     @Secured("ADMIN")
-    public ResponseEntity<?> updateFile(@RequestParam("filename") String filename, @RequestBody String newFilename) {
+    public ResponseEntity<?> updateFile(@RequestParam("filename") String filename,
+                                        @RequestBody String newFilename) {
         fileService.updateFile(filename, newFilename);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    //  Загрузка файлов в базу данных.
+    //  Добавления файла.
     @PostMapping("/file")
     @Secured("ADMIN")
-    public ResponseEntity<?> downloadFile(@RequestParam("filename") String filename,
-                                          @RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<?> uploadFile(@RequestParam("filename") String filename,
+                                        @RequestParam("file") MultipartFile file) throws IOException {
         fileService.fileSave(filename, file);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    //  Просмотр файла.
+    //  Скачивания файла.
     @GetMapping("/file")
     @Secured({"ADMIN", "USER"})
     public ResponseEntity<byte[]> downloadFile(@RequestParam("filename") String filename) {

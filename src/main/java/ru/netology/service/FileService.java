@@ -61,6 +61,7 @@ public class FileService {
     public List<ResponseFile> getFile(int limit) {
         Optional<List<File>> listFile = Optional.of(fileRepository.findAll());
         return listFile.get().stream().map(fr -> new ResponseFile(fr.getFilename(), fr.getType()))
-                .limit(limit).collect(Collectors.toList());
+                .limit(limit)
+                .collect(Collectors.toList());
     }
 }

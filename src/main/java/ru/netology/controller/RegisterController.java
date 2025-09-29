@@ -1,6 +1,6 @@
 package ru.netology.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,9 +10,9 @@ import ru.netology.model.Person;
 import ru.netology.service.RegisterService;
 
 @RestController
+@AllArgsConstructor
 public class RegisterController {
 
-    @Autowired
     private RegisterService registerService;
 
     @PostMapping("/register")
