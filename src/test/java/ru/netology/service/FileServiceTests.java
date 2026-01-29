@@ -1,5 +1,6 @@
 package ru.netology.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.when;
 public class FileServiceTests {
     @InjectMocks
     private FileService fileService;
+
     @Mock
     private FileRepository fileRepository;
 
@@ -55,13 +57,14 @@ public class FileServiceTests {
     @Test
     void fileSaveTest() throws IOException {
         when(fileRepository.save(Mockito.any(File.class))).thenReturn(file);
+        file.setFilename("file");
 
-        var isFile = fileService.fileSave(file.getFilename(), fileTest);
+        fileService.fileSave(fileTest, "file");
 
-        assertNotNull(isFile);
         Mockito.verify(fileRepository, Mockito.times(1)).save(file);
-        assertEquals("filename", file.getFilename());
+        assertEquals("file", file.getFilename());
         assertEquals(fileTest.getBytes(), file.getData());
+        assertEquals(fileTest.getContentType(), file.getType());
     }
 
     @DisplayName("File с таким именем существует.")
@@ -69,12 +72,12 @@ public class FileServiceTests {
     void fileSaveThrows() {
         when(fileRepository.findByFilename(file.getFilename())).thenReturn(Optional.of(file));
 
-        assertThrows(FileNotFoundException.class, () -> fileService.fileSave(file.getFilename(), fileTest),
+        assertThrows(FileNotFoundException.class, () -> fileService.fileSave(fileTest, file.getFilename()),
                 "Файл c таким именем уже существует!");
     }
 
     @Test
-    void downloadFileTest() {
+    void downloadFileTest() throws JsonProcessingException {
         when(fileRepository.findByFilename(Mockito.anyString())).thenReturn(Optional.of(file));
 
         var newFileTest = fileService.downloadFile(file.getFilename());
@@ -137,4 +140,5 @@ public class FileServiceTests {
         Mockito.verify(fileRepository).deleteById(1);
         Mockito.verify(fileRepository, Mockito.times(1)).deleteById(1);
     }
+
 }

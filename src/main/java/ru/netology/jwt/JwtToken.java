@@ -27,7 +27,6 @@ public class JwtToken {
 
     //    generate JWT token.
     public String generateToken(Authentication authentication) {
-//        String username = person.getEmail();
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         Date carrentDate = new Date();
         Date expirationDate = Date.from(LocalDateTime.now().plusMinutes(jwtTimeLive)

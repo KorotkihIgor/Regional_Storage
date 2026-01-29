@@ -1,13 +1,16 @@
 package ru.netology;
 
-import org.junit.jupiter.api.Test;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import ru.netology.configTest.MyTestConfiguration;
 
-@SpringBootTest
+@SpringBootTest()
 class CloudStorageApplicationTests {
 
-    @Test
-    void contextLoads() {
+    public static void main(String[] args) {
+        SpringApplication.from(CloudStorageApplication::main)
+                .with(MyTestConfiguration.class)
+                .run(args);
     }
 
 }

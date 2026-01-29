@@ -68,4 +68,5 @@ public class RegisterServiceTests {
         Assertions.assertThrows(RegistrationException.class, () -> registerService.register(personTest),
                 String.format("Пользователь с логином %s уже зарегистрирован!", personTest.getEmail()));
     }
+
 }

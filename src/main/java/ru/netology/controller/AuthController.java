@@ -1,7 +1,6 @@
 package ru.netology.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.netology.dto.AuthRequest;
@@ -18,12 +17,6 @@ public class AuthController {
     public ResponseEntity<AuthResponseToken> login(@RequestBody AuthRequest authRequest) {
         AuthResponseToken token = authService.authLogin(authRequest);
         return ResponseEntity.ok(token);
-
-    }
-
-    @GetMapping("/login")
-    public ResponseEntity<?> login() {
-        return ResponseEntity.ok(HttpStatus.OK);
     }
 
 }

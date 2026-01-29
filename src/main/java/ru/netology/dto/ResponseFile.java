@@ -1,5 +1,6 @@
 package ru.netology.dto;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class ResponseFile {
+
     private String filename;
     private String type;
     private byte[] data;
@@ -18,4 +20,5 @@ public class ResponseFile {
         this.filename = filename;
         this.type = type;
     }
+
 }

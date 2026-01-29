@@ -14,35 +14,37 @@ import ru.netology.service.FileService;
 import java.io.IOException;
 import java.util.List;
 
-
 @RestController
 public class FileController {
+
+    private static final String URL = "/file";
+    private static final String PARAM_FILE = "filename";
 
     @Autowired
     private FileService fileService;
 
-    //  Изменения файла.
-    @PutMapping("/file")
+    //  Добавления файла.
+    @PostMapping(URL)
     @Secured("ADMIN")
-    public ResponseEntity<?> updateFile(@RequestParam("filename") String filename,
-                                        @RequestBody String newFilename) {
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,
+                                        @RequestParam(PARAM_FILE) String filename) throws IOException {
+        fileService.fileSave(file, filename);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    //  Изменения файла.
+    @PutMapping(URL)
+    @Secured("ADMIN")
+    public ResponseEntity<?> updateFile(@RequestParam(PARAM_FILE) String filename,
+                                        @RequestParam("newFilename") String newFilename) {
         fileService.updateFile(filename, newFilename);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    //  Добавления файла.
-    @PostMapping("/file")
-    @Secured("ADMIN")
-    public ResponseEntity<?> uploadFile(@RequestParam("filename") String filename,
-                                        @RequestParam("file") MultipartFile file) throws IOException {
-        fileService.fileSave(filename, file);
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
-
     //  Скачивания файла.
-    @GetMapping("/file")
+    @GetMapping(URL)
     @Secured({"ADMIN", "USER"})
-    public ResponseEntity<byte[]> downloadFile(@RequestParam("filename") String filename) {
+    public ResponseEntity<byte[]> downloadFile(@RequestParam(PARAM_FILE) String filename) {
         ResponseFile responseFile = fileService.downloadFile(filename);
         if (responseFile == null) {
             return ResponseEntity.notFound().build();
@@ -54,9 +56,9 @@ public class FileController {
     }
 
     // Удаление файла по имени файла.
-    @DeleteMapping("/file")
+    @DeleteMapping(URL)
     @Secured("ADMIN")
-    public ResponseEntity<?> deleteFile(@RequestParam("filename") String filename) {
+    public ResponseEntity<?> deleteFile(@RequestParam(PARAM_FILE) String filename) {
         fileService.deleteFile(filename);
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -67,5 +69,4 @@ public class FileController {
     public ResponseEntity<List<ResponseFile>> getFiles(@RequestParam("limit") int limit) {
         return ResponseEntity.ok(fileService.getFile(limit));
     }
-
 }

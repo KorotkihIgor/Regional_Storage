@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -26,12 +25,10 @@ class RegisterControllerTest {
     @InjectMocks
     private RegisterController registerController;
 
-    @Autowired
-    private MockMvc mockMvc;
-
     @Mock
     private RegisterService registerService;
 
+    private MockMvc mockMvc;
     private ObjectMapper objectMapper;
 
     @BeforeEach
