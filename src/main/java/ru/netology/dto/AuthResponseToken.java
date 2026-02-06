@@ -11,6 +11,5 @@ import lombok.*;
 public class AuthResponseToken {
 
     @JsonProperty("auth-token")
-//    @JsonProperty("authorization")
     private String token;
 }
