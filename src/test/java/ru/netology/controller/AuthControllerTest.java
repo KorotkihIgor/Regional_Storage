@@ -42,7 +42,7 @@ class AuthControllerTest {
         AuthResponseToken authResponseToken = new AuthResponseToken("AuthToken");
 
         AuthRequest authRequest = AuthRequest.builder()
-                .email("test@com")
+                .login("test@com")
                 .password("testPassword")
                 .build();
 

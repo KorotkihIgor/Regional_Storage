@@ -12,7 +12,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import ru.netology.exception.FileNotFoundException;
+import ru.netology.exception.FileBadRequestException;
 import ru.netology.model.File;
 import ru.netology.repository.FileRepository;
 
@@ -72,7 +72,7 @@ public class FileServiceTests {
     void fileSaveThrows() {
         when(fileRepository.findByFilename(file.getFilename())).thenReturn(Optional.of(file));
 
-        assertThrows(FileNotFoundException.class, () -> fileService.fileSave(fileTest, file.getFilename()),
+        assertThrows(FileBadRequestException.class, () -> fileService.fileSave(fileTest, file.getFilename()),
                 "Файл c таким именем уже существует!");
     }
 
@@ -91,7 +91,7 @@ public class FileServiceTests {
     void downloadFileThrows() {
         when(fileRepository.findByFilename(file.getFilename())).thenReturn(Optional.empty());
 
-        assertThrows(FileNotFoundException.class, () -> fileService.downloadFile(file.getFilename()),
+        assertThrows(FileBadRequestException.class, () -> fileService.downloadFile(file.getFilename()),
                 String.format("Файл  %s не найден!", file.getFilename()));
 
     }
@@ -114,7 +114,7 @@ public class FileServiceTests {
     void updateFileThrows() {
         when(fileRepository.findByFilename(file.getFilename())).thenReturn(Optional.empty());
 
-        assertThrows(FileNotFoundException.class, () -> fileService.updateFile(file.getFilename(), Mockito.anyString()),
+        assertThrows(FileBadRequestException.class, () -> fileService.updateFile(file.getFilename(), Mockito.anyString()),
                 (String.format("Файл  %s не найден!", file.getFilename())));
     }
 

@@ -39,7 +39,7 @@ public class RegisterServiceTests {
     void setUp() {
         personTest = Person.builder()
                 .Id(1)
-                .email("emailTest")
+                .login("emailTest")
                 .password(encoder.encode("password"))
                 .role(Role.USER)
                 .build();
@@ -55,7 +55,7 @@ public class RegisterServiceTests {
 
         assertNotNull(newPersonsTest);
         Mockito.verify(registerRepository, Mockito.times(1)).save(personTest);
-        assertEquals("emailTest", personTest.getEmail());
+        assertEquals("emailTest", personTest.getLogin());
         assertEquals("passwordTest", personTest.getPassword());
     }
 
@@ -63,10 +63,10 @@ public class RegisterServiceTests {
     @Test
     void registerThrows() {
 
-        when(registerRepository.findByEmail(personTest.getEmail())).thenReturn(Optional.of(personTest));
+        when(registerRepository.findByLogin(personTest.getLogin())).thenReturn(Optional.of(personTest));
 
         Assertions.assertThrows(RegistrationException.class, () -> registerService.register(personTest),
-                String.format("Пользователь с логином %s уже зарегистрирован!", personTest.getEmail()));
+                String.format("Пользователь с логином %s уже зарегистрирован!", personTest.getLogin()));
     }
 
 }

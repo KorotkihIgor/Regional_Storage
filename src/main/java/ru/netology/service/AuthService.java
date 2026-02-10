@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.netology.dto.AuthRequest;
 import ru.netology.dto.AuthResponseToken;
+import ru.netology.exception.PasswordBadRequest;
 import ru.netology.jwt.JwtToken;
 import ru.netology.model.Token;
 import ru.netology.repository.RegisterRepository;
@@ -25,17 +26,16 @@ public class AuthService {
     private TokenRepository tokenRepository;
 
     public AuthResponseToken authLogin(AuthRequest authRequest) {
-        var authPerson = registerRepository.findByEmail(authRequest.getEmail()).orElseThrow();
+        var authPerson = registerRepository.findByLogin(authRequest.getLogin()).orElseThrow();
         if (passwordEncoder.matches(authRequest.getPassword(), authPerson.getPassword())) {
             Authentication authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword()));
+                    .authenticate(new UsernamePasswordAuthenticationToken(authRequest.getLogin(), authRequest.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String token = jwtToken.generateToken(authentication);
-            tokenRepository.save(new Token(authPerson.getEmail(), token));
+            tokenRepository.save(new Token(authPerson.getLogin(), token));
             return new AuthResponseToken(token);
         } else {
-            throw new RuntimeException("Неправельный пароль");
+            throw new PasswordBadRequest("Неправильный пароль!");
         }
     }
-
 }

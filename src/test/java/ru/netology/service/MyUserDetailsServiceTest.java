@@ -32,7 +32,7 @@ class MyUserDetailsServiceTest {
     @BeforeEach
     void setUp() {
         person = Person.builder().Id(1)
-                .email("emailTest@com")
+                .login("emailTest@com")
                 .password("passwordTest")
                 .role(Role.USER)
                 .build();
@@ -40,20 +40,20 @@ class MyUserDetailsServiceTest {
 
     @Test
     void loadUserByUsername() {
-        Mockito.when(registerRepository.findByEmail(person.getEmail())).thenReturn(Optional.of(person));
+        Mockito.when(registerRepository.findByLogin(person.getLogin())).thenReturn(Optional.of(person));
 
-        var personTest = myUserDetailsService.loadUserByUsername(person.getEmail());
+        var personTest = myUserDetailsService.loadUserByUsername(person.getLogin());
 
         assertNotNull(personTest);
-        assertEquals("emailTest@com", person.getEmail());
+        assertEquals("emailTest@com", person.getLogin());
     }
 
     @DisplayName("Отсутствие person в БД.")
     @Test
     void loadUserByUsernameThrows() {
-        Mockito.when(registerRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.empty());
+        Mockito.when(registerRepository.findByLogin(Mockito.anyString())).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> myUserDetailsService.loadUserByUsername(person.getEmail()),
+        assertThrows(UserNotFoundException.class, () -> myUserDetailsService.loadUserByUsername(person.getLogin()),
                 "Пользователь %s не найден!");
     }
 }

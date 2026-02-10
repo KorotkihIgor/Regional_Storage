@@ -18,10 +18,10 @@ public class RegisterService {
     private int count;
 
     public Person register(Person person) {
-        registerRepository.findByEmail(person.getEmail())
+        registerRepository.findByLogin(person.getLogin())
                 .ifPresent(s -> {
                     throw new RegistrationException(String
-                            .format("Пользователь с логином %s уже зарегистрирован!", person.getEmail()));
+                            .format("Пользователь с логином %s уже зарегистрирован!", person.getLogin()));
                 });
         person.setPassword(encoder.encode(person.getPassword()));
         if (count == 0) {

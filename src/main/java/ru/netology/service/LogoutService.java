@@ -23,6 +23,6 @@ public class LogoutService implements LogoutHandler {
                        Authentication authentication) {
         String token = jwtAuthFilter.parseToken(request);
         tokenRepository.findByToken(token)
-                .ifPresent(storedToken -> tokenRepository.deleteByEmail(storedToken.getEmail()));
+                .ifPresent(storedToken -> tokenRepository.deleteByLogin(storedToken.getLogin()));
     }
 }

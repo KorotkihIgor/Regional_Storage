@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(MyTestConfiguration.class)
 public class IntegrationTest {
 
-    private static final String EMAIL = "emailTest";
+    private static final String LOGIN = "emailTest";
     private static final String PASSWORD = "passwordTest";
 
     @Autowired
@@ -31,7 +31,7 @@ public class IntegrationTest {
     @Test
     void registerTest() throws Exception {
         Person person = Person.builder()
-                .email(EMAIL)
+                .login(LOGIN)
                 .password(PASSWORD)
                 .build();
         mockMvc.perform(MockMvcRequestBuilders.post("/register")
@@ -44,7 +44,7 @@ public class IntegrationTest {
     @Test
     void authTest() throws Exception {
         AuthRequest authRequest = AuthRequest.builder()
-                .email(EMAIL)
+                .login(LOGIN)
                 .password(PASSWORD)
                 .build();
         mockMvc.perform(MockMvcRequestBuilders.post("/login")

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.netology.dto.ResponseFile;
-import ru.netology.exception.FileNotFoundException;
+import ru.netology.exception.FileBadRequestException;
 import ru.netology.model.File;
 import ru.netology.repository.FileRepository;
 
@@ -22,7 +22,7 @@ public class FileService {
     @Transactional
     public File updateFile(String filename, String newFilename) {
         File file = fileRepository.findByFilename(filename)
-                .orElseThrow(() -> new FileNotFoundException(String.format("Файл  %s не найден!", filename)));
+                .orElseThrow(() -> new FileBadRequestException(String.format("Файл  %s не найден!", filename)));
         file.setFilename(newFilename);
         return fileRepository.save(file);
     }
@@ -30,7 +30,7 @@ public class FileService {
     @Transactional
     public void deleteFile(String filename) {
         File file = fileRepository.findByFilename(filename)
-                .orElseThrow(() -> new FileNotFoundException(String.format("Файл  %s не найден!", filename)));
+                .orElseThrow(() -> new FileBadRequestException(String.format("Файл  %s не найден!", filename)));
         fileRepository.deleteById(file.getId());
 
     }
@@ -38,7 +38,7 @@ public class FileService {
     @Transactional
     public ResponseFile downloadFile(String filename) {
         File file = fileRepository.findByFilename(filename)
-                .orElseThrow(() -> new FileNotFoundException(String.format("Файл  %s не найден!", filename)));
+                .orElseThrow(() -> new FileBadRequestException(String.format("Файл  %s не найден!", filename)));
 
         return ResponseFile.builder()
                 .filename(file.getFilename())
@@ -50,10 +50,10 @@ public class FileService {
     @Transactional
     public void fileSave(MultipartFile file, String filename) throws IOException {
         if (file.isEmpty()) {
-            throw new FileNotFoundException("Файл не загружен!");
+            throw new FileBadRequestException("Файл не загружен!");
         }
         if (fileRepository.findByFilename(filename).isPresent()) {
-            throw new FileNotFoundException(String.format("Файл с именем %s уже существует!", filename));
+            throw new FileBadRequestException(String.format("Файл с именем %s уже существует!", filename));
         }
 
         fileRepository.save(new File(filename,

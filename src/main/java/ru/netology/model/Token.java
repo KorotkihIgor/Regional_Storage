@@ -16,11 +16,12 @@ public class Token {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String email;
+    private String login;
     private String token;
 
     public Token(String email, String token) {
-        this.email = email;
+        this.login = email;
         this.token = token;
     }
+
 }

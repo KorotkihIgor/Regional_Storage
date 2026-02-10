@@ -41,7 +41,7 @@ class RegisterControllerTest {
     void register() throws Exception {
         Person person = Person.builder()
                 .Id(1)
-                .email("emailTest")
+                .login("emailTest")
                 .password("test")
                 .role(Role.ADMIN)
                 .build();

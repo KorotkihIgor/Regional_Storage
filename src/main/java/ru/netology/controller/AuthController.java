@@ -18,5 +18,4 @@ public class AuthController {
         AuthResponseToken token = authService.authLogin(authRequest);
         return ResponseEntity.ok(token);
     }
-
 }
